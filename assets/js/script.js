@@ -15,24 +15,28 @@ let headerTimer = setInterval(function() {
 
 /**************************************************** Build Time block ****************************************************/
 for(let i = -PAST_HOURS; i <= FUTURE_HOURS; i++) {
-  let timeBlock = $("<div>").addClass("row");
-  timeBlock.attr("id", "time-table");
-  timeBlock.attr("data-hour-index", i);
+  let timeBlock = $("<div>").addClass("input-group");
+  timeBlock.attr("id", `time-table-${i}`);
   $("#time-block").append(timeBlock);
 
-  let timeBlockHour = $("<div>").addClass("col-sm-1 border border-dark");
-  timeBlockHour.text(moment().add(i, 'hours').format('h:[00] a'));
+  let timeBlockHour = $("<div>").addClass("input-group-prepend");
+  let timeBlockHourButton = $("<button>").addClass("btn btn-outline-secondary disabled");
+  timeBlockHourButton.text(moment().add(i, 'hours').format('hhA'));
+  timeBlockHour.append(timeBlockHourButton);
   
-  let timeBlockContent = $("<div>").addClass("col-sm-10 border border-primary");
+  let timeBlockContent = $("<input>").addClass("form-control");
   timeBlockContent.text("bibidibabidibu");
   
-  let timeBlockSave = $("<div>").addClass("col-sm-1 border border-danger");
-  timeBlockSave.text("save");
+  let timeBlockSave = $("<div>").addClass("input-group-append");
+  let timeBlockSaveButton = $("<button>").addClass("btn btn-outline-primary");
+  timeBlockSaveButton.attr("data-hour-index", i);
+  timeBlockSaveButton.text("save");
+  timeBlockSave.append(timeBlockSaveButton);
   
-  $("#time-table").append(timeBlockHour);
-  $("#time-table").append(timeBlockContent);
-  $("#time-table").append(timeBlockSave);
+  $(`#time-table-${i}`).append(timeBlockHour);
+  $(`#time-table-${i}`).append(timeBlockContent);
+  $(`#time-table-${i}`).append(timeBlockSave);
 }
 
-
+/**************************************************** Build Time block ****************************************************/
 
