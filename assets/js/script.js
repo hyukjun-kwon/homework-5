@@ -75,6 +75,9 @@ $(document).ready(function() {
   function refreshPlanner() {
     // renew data (discard any unsaved changes)
     plannerData = JSON.parse(localStorage.getItem("plannerData"));
+    if(plannerData === null) {
+      plannerData = {};
+    }
 
     // adjust the current date display
     $("#current-date").text(moment(moment(`2020${currentDate}`)).format("YYYY - MMMM - DD"));
@@ -104,9 +107,9 @@ $(document).ready(function() {
   $("#clear-button").on("click", event => {
     event.preventDefault();
     localStorage.clear();
-    plannerData = {};
     currentDate = moment().format("MMDD");
-    buildPlanner(["","","","","","","","","",""]);
+    
+    refreshPlanner();
   });
-  
+
 });
