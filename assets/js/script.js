@@ -1,6 +1,4 @@
 $(document).ready(function() {
-  /************************************************ LOCAL STORAGE FUNCTIONS ************************************************/
-
   // If data exists on local Storage
   let plannerData = JSON.parse(localStorage.getItem("plannerData"));
 
@@ -17,6 +15,13 @@ $(document).ready(function() {
   // If plannerData does not exist in local storage, create object
   else {
     plannerData = {};
+  }
+
+  // Border the current hour block (only if displaying today)
+  if(currentDate === moment().format("MMDD")
+  && ((moment().format("H") - 9) >= 0)
+  && ((moment().format("H") - 9) <= 9)) {
+    $(`#content-5`).addClass("border border-primary highlighted");
   }
 
   /************************************** Display Current Time at the Header Jumbotron **************************************/
