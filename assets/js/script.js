@@ -4,18 +4,25 @@ $(document).ready(function() {
   const FUTURE_HOURS = 6; // Display Six future hours
 
   /************************************************ LOCAL STORAGE FUNCTIONS ************************************************/
-  
+
   // If data exists on local Storage
-  let calendarData = localStorage.getItem("calendarData");
-  calendarData = {};
-  calendarData["0130"] = [ "what", "intheworld", "", "", "","","","","",""];
-  if( calendarData != null ) {
-    let today = moment().format("MMDD");
-    buildCalendar(calendarData[today]);
+  let plannerData = JSON.parse(localStorage.getItem("plannerData"));
+  console.log(plannerData);
+  
+  // date that is being displayed as a string "MMDD" ie. 1225 = Dec 25th
+  let currentDate = moment().format("MMDD");
+  console.log(currentDate);
+
+  // If plannerData exists in local storage
+  if (plannerData != null) {
+    // Build planner if there is some data in today's array
+    if (plannerData[`"${currentDate}"`] != undefined) {
+      buildPlanner(plannerData[`"${currentDate}"`]);
+    }
   }
+  // If plannerData does not exist in local storage, create object
   else {
-    calendarData = {};
-    console.log("data e???");
+    plannerData = {};
   }
 
   /************************************** Display Current Time at the Header Jumbotron **************************************/
@@ -28,7 +35,7 @@ $(document).ready(function() {
   }, 1000);
 
   /************************************************* Render Data on timeblock ***************************************************/
-  function buildCalendar(schedule) {
+  function buildPlanner(schedule) {
     for (let i = 0; i < 10; i++) {
       $(`#content-${i}`).text(schedule[i]);
     }
@@ -37,9 +44,17 @@ $(document).ready(function() {
   /*************************************************** Save Button Function *****************************************************/
   $(".save-button").on("click", function(event) {
     event.preventDefault();
-    console.log($(this).attr("data-time-stamp"));
-    // Search through the data base, look for time stamp
+    // timeIndex - 0:9AM, 1:10AM, 2:11AM, ... , 9:6PM
+    let timeIndex = $(this).attr("data-time-index");
 
-    // Modify the content on the data base
+    // Load current day array. If not defined, build one
+    if (plannerData[`"${currentDate}"`] === undefined) {
+      plannerData[`"${currentDate}"`] = ["", "", "", "", "", "", "", "", "", ""];
+    }
+
+    // edit the plannerData object, and update it in the local storage too
+    plannerData[`"${currentDate}"`][timeIndex] = $(`#content-${timeIndex}`).val();
+    localStorage.setItem("plannerData", JSON.stringify(plannerData));
   });
+
 });
