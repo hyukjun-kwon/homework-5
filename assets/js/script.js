@@ -1,17 +1,11 @@
 $(document).ready(function() {
-  /************************************************ CONFIGURATION CONSTANTS ************************************************/
-  const PAST_HOURS = 3; // Display Three previous hours
-  const FUTURE_HOURS = 6; // Display Six future hours
-
   /************************************************ LOCAL STORAGE FUNCTIONS ************************************************/
 
   // If data exists on local Storage
   let plannerData = JSON.parse(localStorage.getItem("plannerData"));
-  console.log(plannerData);
-  
+
   // date that is being displayed as a string "MMDD" ie. 1225 = Dec 25th
   let currentDate = moment().format("MMDD");
-  console.log(currentDate);
 
   // If plannerData exists in local storage
   if (plannerData != null) {
@@ -33,11 +27,13 @@ $(document).ready(function() {
   let headerTimer = setInterval(function() {
     currentDay.text(moment().format("MMMM Do YYYY, h:mm:ss A"));
   }, 1000);
+  $("#current-date").text(moment().format("YYYY - MMMM - DD"));
 
   /************************************************* Render Data on timeblock ***************************************************/
   function buildPlanner(schedule) {
     for (let i = 0; i < 10; i++) {
-      $(`#content-${i}`).text(schedule[i]);
+      $(`#content-${i}`).val("");
+      $(`#content-${i}`).val(schedule[i]);
     }
   }
 
@@ -49,7 +45,7 @@ $(document).ready(function() {
 
     // Load current day array. If not defined, build one
     if (plannerData[`"${currentDate}"`] === undefined) {
-      plannerData[`"${currentDate}"`] = ["", "", "", "", "", "", "", "", "", ""];
+      plannerData[`"${currentDate}"`] = ["","","","","","","","","",""];
     }
 
     // edit the plannerData object, and update it in the local storage too
@@ -57,4 +53,51 @@ $(document).ready(function() {
     localStorage.setItem("plannerData", JSON.stringify(plannerData));
   });
 
+  /*************************************************** Date Button Function *****************************************************/
+  $("#date-forward").on("click", event => {
+    event.preventDefault();
+
+    // move forward a day
+    currentDate = moment(moment(`2020${currentDate}`)).add(1, 'days').format("MMDD");
+
+    refreshPlanner();
+  })
+
+  $("#date-backward").on("click", event => {
+    event.preventDefault();
+
+    // move backward a day
+    currentDate = moment(moment(`2020${currentDate}`)).add(-1, 'days').format("MMDD");
+
+    refreshPlanner();
+  })
+
+  function refreshPlanner() {
+    // renew data (discard any unsaved changes)
+    plannerData = JSON.parse(localStorage.getItem("plannerData"));
+
+    // adjust the current date display
+    console.log("refreshing for ", currentDate);
+    $("#current-date").text(moment(moment(`2020${currentDate}`)).format("YYYY - MMMM - DD"));
+
+    // Remove highlighted hour block if there is any
+    if($(".highlighted").length != 0) {
+      $(".highlighted").removeClass("border border-primary highlighted");
+    }
+
+    // Border the current hour block (only if displaying today)
+    if(currentDate === moment().format("MMDD")
+    && ((moment().format("H") - 9) >= 0)
+    && ((moment().format("H") - 9) <= 9)) {
+      $(`#content-5`).addClass("border border-primary highlighted");
+    }
+
+    // check if there is data for the new current date, and build planner
+    if (plannerData[`"${currentDate}"`] === undefined) {
+      plannerData[`"${currentDate}"`] = ["","","","","","","","","",""];
+    }
+    console.log(plannerData[`"${currentDate}"`]);
+    // build Planner
+    buildPlanner(plannerData[`"${currentDate}"`]);
+  }
 });
