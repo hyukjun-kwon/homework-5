@@ -21,7 +21,7 @@ $(document).ready(function() {
   if(currentDate === moment().format("MMDD")
   && ((moment().format("H") - 9) >= 0)
   && ((moment().format("H") - 9) <= 9)) {
-    $(`#content-5`).addClass("border border-primary highlighted");
+    $(`#content-${moment().format("H") - 9}`).addClass("border border-primary highlighted");
   }
 
   /************************************** Display Current Time at the Header Jumbotron **************************************/
@@ -96,7 +96,7 @@ $(document).ready(function() {
     if(currentDate === moment().format("MMDD")
     && ((moment().format("H") - 9) >= 0)
     && ((moment().format("H") - 9) <= 9)) {
-      $(`#content-5`).addClass("border border-primary highlighted");
+      $(`#content-${moment().format("H") - 9}`).addClass("border border-primary highlighted");
     }
 
     // check if there is data for the new current date, and build planner
