@@ -10,8 +10,8 @@ $(document).ready(function() {
   // If plannerData exists in local storage
   if (plannerData != null) {
     // Build planner if there is some data in today's array
-    if (plannerData[`"${currentDate}"`] != undefined) {
-      buildPlanner(plannerData[`"${currentDate}"`]);
+    if (plannerData[`${currentDate}`] != undefined) {
+      buildPlanner(plannerData[`${currentDate}`]);
     }
   }
   // If plannerData does not exist in local storage, create object
@@ -44,12 +44,12 @@ $(document).ready(function() {
     let timeIndex = $(this).attr("data-time-index");
 
     // Load current day array. If not defined, build one
-    if (plannerData[`"${currentDate}"`] === undefined) {
-      plannerData[`"${currentDate}"`] = ["","","","","","","","","",""];
+    if (plannerData[`${currentDate}`] === undefined) {
+      plannerData[`${currentDate}`] = ["","","","","","","","","",""];
     }
 
     // edit the plannerData object, and update it in the local storage too
-    plannerData[`"${currentDate}"`][timeIndex] = $(`#content-${timeIndex}`).val();
+    plannerData[`${currentDate}`][timeIndex] = $(`#content-${timeIndex}`).val();
     localStorage.setItem("plannerData", JSON.stringify(plannerData));
   });
 
@@ -92,11 +92,11 @@ $(document).ready(function() {
     }
 
     // check if there is data for the new current date, and build planner
-    if (plannerData[`"${currentDate}"`] === undefined) {
-      plannerData[`"${currentDate}"`] = ["","","","","","","","","",""];
+    if (plannerData[`${currentDate}`] === undefined) {
+      plannerData[`${currentDate}`] = ["","","","","","","","","",""];
     }
 
     // build Planner
-    buildPlanner(plannerData[`"${currentDate}"`]);
+    buildPlanner(plannerData[`${currentDate}`]);
   }
 });
