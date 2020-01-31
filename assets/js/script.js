@@ -61,7 +61,7 @@ $(document).ready(function() {
     currentDate = moment(moment(`2020${currentDate}`)).add(1, 'days').format("MMDD");
 
     refreshPlanner();
-  })
+  });
 
   $("#date-backward").on("click", event => {
     event.preventDefault();
@@ -70,7 +70,7 @@ $(document).ready(function() {
     currentDate = moment(moment(`2020${currentDate}`)).add(-1, 'days').format("MMDD");
 
     refreshPlanner();
-  })
+  });
 
   function refreshPlanner() {
     // renew data (discard any unsaved changes)
@@ -99,4 +99,14 @@ $(document).ready(function() {
     // build Planner
     buildPlanner(plannerData[`${currentDate}`]);
   }
+
+  /*************************************************** Clear Button Function *****************************************************/
+  $("#clear-button").on("click", event => {
+    event.preventDefault();
+    localStorage.clear();
+    plannerData = {};
+    currentDate = moment().format("MMDD");
+    buildPlanner(["","","","","","","","","",""]);
+  });
+  
 });
