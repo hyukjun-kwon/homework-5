@@ -77,7 +77,6 @@ $(document).ready(function() {
     plannerData = JSON.parse(localStorage.getItem("plannerData"));
 
     // adjust the current date display
-    console.log("refreshing for ", currentDate);
     $("#current-date").text(moment(moment(`2020${currentDate}`)).format("YYYY - MMMM - DD"));
 
     // Remove highlighted hour block if there is any
@@ -96,7 +95,7 @@ $(document).ready(function() {
     if (plannerData[`"${currentDate}"`] === undefined) {
       plannerData[`"${currentDate}"`] = ["","","","","","","","","",""];
     }
-    console.log(plannerData[`"${currentDate}"`]);
+
     // build Planner
     buildPlanner(plannerData[`"${currentDate}"`]);
   }
